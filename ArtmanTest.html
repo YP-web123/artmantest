@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文艺知识储备考试</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#f5f0eb;color:#2c2c2c;min-height:100vh}
+.hero{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);color:#f5f0eb;padding:44px 20px 34px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 70%,rgba(255,215,0,.05),transparent 60%);pointer-events:none}
+.hero h1{font-family:'Noto Serif SC',serif;font-size:2rem;font-weight:700;letter-spacing:5px;margin-bottom:4px;position:relative;z-index:1}
+.hero .sub{font-size:.85rem;opacity:.7;letter-spacing:3px;position:relative;z-index:1}
+.hero .badge{display:inline-block;margin-top:12px;padding:2px 16px;border:1px solid rgba(245,240,235,.22);border-radius:20px;font-size:.68rem;letter-spacing:2px;color:rgba(245,240,235,.5);position:relative;z-index:1}
+.container{max-width:720px;margin:0 auto;padding:20px 16px 50px}
+.section-title{font-family:'Noto Serif SC',serif;font-size:1.15rem;font-weight:600;margin:18px 0 10px;padding-bottom:6px;border-bottom:2px solid #ddd;display:flex;align-items:center;gap:8px}
+.section-title .tag{font-size:.62rem;font-weight:400;color:#999;letter-spacing:1px}
+.stats-flash{text-align:center;font-size:.72rem;color:#999;margin-bottom:12px;padding:6px 12px;background:#fff;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04);display:inline-block;width:100%}
+.q-card{background:#fff;border-radius:10px;padding:14px 17px;margin-bottom:10px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.q-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.q-header{display:flex;align-items:flex-start;gap:7px;margin-bottom:7px}
+.q-num{font-size:.67rem;color:#8b5e3c;background:#f5ede1;border-radius:5px;padding:1px 8px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.q-text{font-size:.88rem;line-height:1.75;font-weight:500}
+.q-type{display:inline-block;font-size:.56rem;color:#fff;border-radius:3px;padding:0 6px;margin-left:6px;letter-spacing:1px}
+.t-obj{background:#6c5b7b}.t-sub{background:#c06c4a}.t-fill{background:#3a7ca5}
+.options{display:flex;flex-direction:column;gap:3px}
+.option{display:flex;align-items:flex-start;gap:9px;padding:6px 10px;border-radius:7px;cursor:pointer;transition:background .12s;font-size:.84rem;line-height:1.6;border:1px solid transparent}
+.option:hover{background:#f9f5f0}
+.option input{margin-top:4px;flex-shrink:0;accent-color:#8b5e3c}
+.option.selected{background:#f5ede1;border-color:#d4b896}
+.blank-input{width:100%;padding:8px 11px;border:1px solid #ddd;border-radius:7px;font-size:.85rem;font-family:inherit;outline:none;transition:border-color .2s;background:#fafafa;margin-top:2px}
+.blank-input:focus{border-color:#8b5e3c;background:#fff}
+.submit-wrap{text-align:center;margin:28px 0 16px}
+.btn-submit{padding:15px 60px;font-size:1rem;font-family:inherit;font-weight:600;background:linear-gradient(135deg,#c9a96e,#b8860b);color:#fff;border:none;border-radius:36px;cursor:pointer;letter-spacing:3px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(184,134,11,.35);position:relative}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(184,134,11,.5)}
+.btn-submit::after{content:'';position:absolute;inset:-3px;border-radius:40px;border:2px solid rgba(184,134,11,.3);animation:pulse 2s infinite;pointer-events:none}
+@keyframes pulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.8;transform:scale(1.04)}}
+.result-wrap{display:none;margin-top:20px}
+.result-wrap.show{display:block}
+.result-card{background:#fff;border-radius:14px;padding:26px 24px;box-shadow:0 4px 18px rgba(0,0,0,.06);text-align:center}
+.result-card .emoji-big{font-size:3.2rem;margin-bottom:4px}
+.result-card .title{font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700;margin-bottom:2px}
+.result-card .score{font-size:.9rem;color:#888;margin-bottom:14px}
+.result-card .comment{font-size:.83rem;line-height:1.9;color:#444;text-align:left;background:#f9f5f0;padding:16px 18px;border-radius:10px;border-left:3px solid #b8860b;margin-top:8px}
+.roast-row{margin:8px 0 0;padding:8px 0 8px 10px;border-left:2px solid #e8d5c0;font-size:.8rem;color:#555;line-height:1.75}
+.roast-row .rn{font-weight:600;color:#c0392b}
+.btn-review{padding:10px 32px;font-size:.82rem;font-family:inherit;background:transparent;color:#b8860b;border:1px solid #b8860b;border-radius:28px;cursor:pointer;letter-spacing:1px;transition:.2s;margin:14px auto 0;display:inline-block}
+.btn-review:hover{background:#f5ede1}
+.review-panel{display:none;text-align:left;margin-top:14px}
+.review-panel.show{display:block}
+.rv-item{background:#fafafa;border-radius:8px;padding:11px 13px;margin-bottom:8px;font-size:.8rem;line-height:1.7}
+.rv-item .rv-num{font-weight:600;color:#b8860b;margin-right:4px}
+.rv-item .rv-correct{color:#27ae60;font-weight:500}
+.rv-item .rv-expl{color:#666;margin-top:2px;font-size:.75rem}
+.rv-item .stat-row{display:flex;align-items:center;gap:8px;margin:2px 0;font-size:.74rem}
+.rv-item .stat-bar-wrap{flex:1;height:6px;background:#eee;border-radius:3px;overflow:hidden}
+.rv-item .stat-bar-fill{height:100%;border-radius:3px;transition:width .4s}
+.rv-item .stat-label{min-width:22px;text-align:right;color:#888;font-size:.72rem}
+.rv-item .stat-opt{min-width:24px;color:#555;font-weight:500}
+.rv-item .fill-stat{margin-top:4px;font-size:.8rem}
+.rv-item .fill-stat .big-num{font-size:1.1rem;font-weight:700;color:#27ae60}
+@media(max-width:500px){.hero h1{font-size:1.4rem;letter-spacing:3px}.q-card{padding:12px}.result-card{padding:16px 12px}.btn-submit{padding:14px 40px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>文艺知识储备考试</h1>
+  <p class="sub">测测你到底读了多少书，还是只读了几篇公众号</p>
+  <span class="badge">📝 客观题 + 主观题 + 填空题 · 共 30 题</span>
+</div>
+
+<div class="container" id="root"></div>
+
+<script>
+// ============================================================
+// JSONBin 配置 —— 填入你自己的 Bin ID 和 API Key 即可开启云端共享统计
+// 留空则仅使用本机 localStorage 模式
+// ============================================================
+const CLOUD_ENABLED = true;        // 改为 true 启用
+const BIN_ID = '6a740283f5f4af5e29f10f1d';       // 你的 JSONBin Bin ID
+const API_KEY = '$2a$10$QUGwQUzpEqIiFViAJt5viOHfUxtHCoP8.3fuLK1x2c.qqlh3swfuS';     // 你的 JSONBin API Key
+
+// ============================================================
+// 题目数据
+// ============================================================
+const Q = [
+  // ============ 客观题 1-20 ============
+  {
+    id:1, type:'obj',
+    q:'后现代理论视域中，以下哪一项至今仍活着？（未被宣告死亡）',
+    o:[
+      {t:'上帝',s:0,note:'上帝不仅已死，还是被一个疯子宣判的'},
+      {t:'作者',s:0,note:'作品诞生之后，作者就"死"了'},
+      {t:'哲学',s:0,note:'被很多人宣判过，甚至科学家霍金也宣判了'},
+      {t:'文学',s:3,note:'至今没有人敢审判文学'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ D. 文学（3分）</span>——至今没有人敢审判文学</div><div style="padding-left:12px;color:#444;margin-bottom:8px">后现代理论有个奇怪的爱好：宣判各种东西的"死亡"。上帝被尼采借疯子之口杀了，作者被罗兰·巴特杀了，哲学被霍金补了一刀——唯独文学，被翻来覆去讨论过无数次"危机"，却始终没人敢给它发讣告。说到底，文学这种东西没有单一的身体可以处决——你每次判它死刑，它换个姿势又活过来了。</div><hr style="border:none;border-top:1px solid #e8e0d0;margin:8px 0"><div style="color:#999;font-size:.75rem">✗ A. 上帝——不仅已死，还是疯子宣判的。尼采没说"不存在"，他说"被我们杀了"。</div><div style="color:#999;font-size:.75rem">✗ B. 作者——作品诞生那一刻，作者就"死"了，这是巴特1967年的判决。</div><div style="color:#999;font-size:.75rem">✗ C. 哲学——霍金宣判后哲学家们依然在出书，这次宣判显然没有生效。</div>'
+  },
+  {
+    id:2, type:'obj',
+    q:'以下哪部电影作品表达了反战主题？',
+    o:[
+      {t:'神秘博士',s:0,note:'科幻电视剧，没有反战主题'},
+      {t:'奇爱博士',s:3,note:'就是那个坐着导弹飞向太空的博士'},
+      {t:'奇异博士',s:0,note:'这个虽然反地球毁灭，但是也不算反战'},
+      {t:'卡里加里博士',s:0,note:'属于客串的选项'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ B. 奇爱博士（3分）</span>——就是那个骑着核弹飞向太空的博士</div><div style="padding-left:12px;color:#444;margin-bottom:8px">库布里克1964年的黑色喜剧。一个发疯的美国将军擅自发动核打击，而坐轮椅的前纳粹科学家奇爱博士最后骑着核弹飞向了太空——这不是科幻，这是讽刺。片名副标题叫"我如何学会停止担忧并爱上炸弹"——"爱上炸弹"四个字，就是对冷战核逻辑最优雅的竖中指。</div><hr style="border:none;border-top:1px solid #e8e0d0;margin:8px 0"><div style="color:#999;font-size:.75rem">✗ A. 神秘博士——英国科幻长寿剧，主要讲时空冒险，不关战争的事。</div><div style="color:#999;font-size:.75rem">✗ C. 奇异博士——漫威的，反的是多玛姆的维度吞噬，反战不是他的业务范围。</div><div style="color:#999;font-size:.75rem">✗ D. 卡里加里博士——1920年默片经典，讲精神病院和催眠，不是反战片。</div>'
+  },
+  {
+    id:3, type:'obj',
+    q:'以下哪部文艺作品不属于德国表现主义流派？',
+    o:[
+      {t:'卡夫卡《变形记》',s:0,note:'表现主义文学代表作：人变成甲虫的荒诞设定直指现代人的异化处境'},
+      {t:'FW·茂瑙《大都会》',s:0,note:'表现主义电影代表作：扭曲的建筑与光影塑造了反乌托邦的视觉范本'},
+      {t:'歌德《浮士德》',s:3,note:'歌德是德国古典主义与浪漫主义时期的巨匠，比表现主义早了一百多年'},
+      {t:'爱德华·蒙克《呐喊》',s:0,note:'表现主义绘画的先声：扭曲的线条与强烈的色彩传达了存在性的焦虑'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ C. 歌德《浮士德》（3分）</span>——虽然是德国人，但不属于表现主义</div><div style="padding-left:12px;color:#444;margin-bottom:8px">德国表现主义是20世纪初的艺术运动（卡夫卡、茂瑙、蒙克都在其中），而歌德的《浮士德》第一部1808年就出版了——比表现主义早了整整一百年。把"德国"和"表现主义"画等号，等于说"唐朝诗人是朦胧诗派"——国籍对，时空全错。</div><hr style="border:none;border-top:1px solid #e8e0d0;margin:8px 0"><div style="color:#999;font-size:.75rem">✗ A. 卡夫卡《变形记》——人变成甲虫，表现主义文学的核心命题就是异化和孤独。</div><div style="color:#999;font-size:.75rem">✗ B. 茂瑙《大都会》——1927年默片，扭曲的建筑和光影就是表现主义电影的标配。</div><div style="color:#999;font-size:.75rem">✗ D. 蒙克《呐喊》——扭动的天空和骷髅脸，表现主义绘画的先声。</div>'
+  },
+  {
+    id:4, type:'obj',
+    q:'萨特说过"______即地狱"？',
+    o:[
+      {t:'三人',s:0,note:'三人也可以是燃冬'},
+      {t:'他人',s:3,note:'由他人的目光来定义我时，他人就成了我无法逃脱的精神牢笼'},
+      {t:'存在',s:0,note:'用萨特的存在主义迷惑大家'},
+      {t:'无间',s:0,note:'也是有无间地狱的，不过跟萨特没关系'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ B. 他人（3分）</span>——L\'enfer, c\'est les autres</div><div style="padding-left:12px;color:#444;margin-bottom:8px">萨特1944年的独幕剧《禁闭》里，三个死人被关在同一间屋里——没有刑具，没有火焰，仅仅是彼此打量、互相定义，就已经是永恒地狱了。关键不是"讨厌的人就是地狱"，而是"他人的目光像一副手铐一样把我锁在了被定义的角色里"——更郁闷的是，我还需要通过你的目光来确认我自己。这悖论才是地狱。选"存在"的——你是把萨特两句最出名的口号搞串了。</div>'
+  },
+  {
+    id:5, type:'obj',
+    q:'柏拉图在《理想国》中用______比喻来描述人类对真理的认知困境。',
+    o:[
+      {t:'洞穴',s:3,note:'洞穴比喻是柏拉图哲学中最核心的思想意象，囚徒走出洞穴的过程即灵魂转向真实的过程'},
+      {t:'深渊',s:0,note:''},
+      {t:'峡谷',s:0,note:''},
+      {t:'荒原',s:0,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ A. 洞穴（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">一群囚徒被锁在洞里，只能看墙上的影子，以为那就是全部的真实。一个人挣脱锁链走出去——被阳光刺瞎（真理一开始是痛苦的）——然后看到了真正的世界。他好心回去告诉同伴，同伴觉得他疯了，甚至想杀了他（苏格拉底之死就是隐喻）。洞穴比喻不只是一个"认知有限"的故事——它是一次灵魂转向、一种教育理论、以及一个关于"说真话的人下场如何"的黑色预言。</div>'
+  },
+  {
+    id:6, type:'obj',
+    q:'以下哪部电影不是法国新浪潮的代表作品？',
+    o:[
+      {t:'《四百击》——特吕弗',s:0,note:'法国新浪潮的开山之作，特吕弗凭此片获戛纳最佳导演'},
+      {t:'《筋疲力尽》——戈达尔',s:0,note:'新浪潮美学的宣言：跳切剪辑、手持摄影、对类型片的解构'},
+      {t:'《八部半》——费里尼',s:3,note:'意大利电影大师费里尼的作品，属于意大利新现实主义后期与现代主义过渡期'},
+      {t:'《广岛之恋》——雷乃',s:0,note:'法国新浪潮左岸派的代表作，阿伦·雷乃将文学性与电影语言深度融合'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ C.《八部半》——费里尼（3分）</span>——意大利的，不是法国新浪潮</div><div style="padding-left:12px;color:#444;margin-bottom:8px">法国新浪潮是1950年代末的电影运动，核心人物是戈达尔、特吕弗、雷乃这批《电影手册》出身的法国导演。费里尼是意大利人，《八部半》是意大利新现实主义向现代主义转型的代表作。把费里尼放进法国新浪潮，相当于把王家卫当成好莱坞导演——方向上就错了。</div><hr style="border:none;border-top:1px solid #e8e0d0;margin:8px 0"><div style="color:#999;font-size:.75rem">✗ A.《四百击》——特吕弗的代表作，新浪潮"作者论"的开山之作。</div><div style="color:#999;font-size:.75rem">✗ B.《筋疲力尽》——戈达尔的跳切技法就是从这里炸出来的。</div><div style="color:#999;font-size:.75rem">✗ D.《广岛之恋》——雷乃拍的，新浪潮左岸派，不都是拍的法国但不影响它是新浪潮。</div>'
+  },
+  {
+    id:7, type:'obj',
+    q:'约翰·列侬《Imagine》——这首歌他到底在"想象"什么？最准确的解读是？',
+    o:[
+      {t:'一个没有战争和饥饿的乌托邦世界',s:1,note:'当然这也是约翰列侬的心愿，但不是这首歌要表达的'},
+      {t:'一个没有宗教、国家、财产这些"人造分割线"的世界',s:3,note:'歌词里写了Imagine there\'s no heaven，no countries，no religion too'},
+      {t:'一个所有人都听Beatles的世界',s:0,note:'在你的眼里Beatles的格局就这么小？嗯？'},
+      {t:'一个回到60年代嬉皮士公社的理想世界',s:0,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ B. 没有宗教、国家、财产的世界（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">列侬的歌词不是泛泛地说"世界和平"——他精准地拆了三样东西：no heaven（没有宗教）、no countries（没有国家）、no possessions（没有财产）。这三样恰好是人类互相杀戮的三大理由：你信不同的神、你属于不同的国、你拥有我想要的财富。列侬问的不是"为什么有战争"，而是"什么让我们觉得彼此不一样"。选A的人方向没错——但"没有战争"是结果，列侬说的是手段。</div>'
+  },
+  {
+    id:8, type:'obj',
+    q:'北岛《回答》："卑鄙是卑鄙者的通行证，______。"',
+    o:[
+      {t:'正义是正义者的裹尸布',s:1,note:'风格和意思比较接近，但是不是北岛这首诗的原话'},
+      {t:'善良是善良者的绊脚石',s:0,note:''},
+      {t:'诚实是诚实者的判决书',s:0,note:''},
+      {t:'高尚是高尚者的墓志铭',s:3,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ D. 高尚是高尚者的墓志铭（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">北岛1976年的两句诗，用最少的字完成了最狠的反讽。通行证让你畅通无阻——卑鄙者就是靠"卑鄙"活得好好的。墓志铭是刻在墓碑上的——高尚者死了才被看见。注意北岛用的词是"墓志铭"而不是"勋章"：勋章是给活人的，墓志铭是给死人的。选A的人——你理解了这种"X是X者的Y"的句法，但不是北岛原句。原句的张力全在"通行证"和"墓志铭"这组意象反差里。</div>'
+  },
+  {
+    id:9, type:'obj',
+    q:'王小波在《黄金时代》里写："那一年我二十一岁，在我一生的黄金时代，我有好多奢望。我想爱，想吃，还想在一瞬间变成______。"',
+    o:[
+      {t:'天上半明半暗的云',s:3,note:'王小波的原文："还想在一瞬间变成天上半明半暗的云"'},
+      {t:'一只自由的鸟',s:0,note:''},
+      {t:'山间没有方向的风',s:1,note:'这句比较符合原句的风格，但不是王小波写的原话'},
+      {t:'一只特立独行的猪',s:0,note:'这是王小波的一本书的名字'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ A. 天上半明半暗的云（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">"半明半暗"不是随便选的——黄金时代的底色就是如此：光明里有阴影，自由里藏着即将被"缓慢受锤"的预感。紧接着这段最浪漫的文字，王小波写了全书最冷的一句："后来我才知道，生活就是个缓慢受锤的过程。"选C的人——你抓到了那种轻盈自由的意象感觉，但王小波从来不用"没有方向的风"这种飘在半空中的比喻。他的精准在于把荒诞和浪漫拧在一起。</div>'
+  },
+  {
+    id:10, type:'obj',
+    q:'"生而为人，我很抱歉"——这句被无数文青当作座右铭的话，最初出自哪里？',
+    o:[
+      {t:'太宰治《人间失格》',s:1,note:'最早出自寺内寿太郎的诗句《手》，太宰治引用了它'},
+      {t:'寺内寿太郎的诗句《手》',s:3,note:''},
+      {t:'电影《被嫌弃的松子的一生》',s:0,note:'电影里确实有用到这句，不过也是引用'},
+      {t:'三岛由纪夫的小说',s:0,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ B. 寺内寿太郎的诗句《手》（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">1936年，日本诗人寺内寿太郎写了这句"生まれて、すみません"。太宰治在《人间失格》里借主角之口引用了它，结果这句话红遍了全世界——但版权在寺内，不在太宰。选太宰治的人得1分——你知道这句话跟太宰有关，但你不知道的是：最有名的"引述者"往往不是原创者，这是文化记忆里最常见的"著作权覆盖"。松子也引用了这句，三岛没引过。</div>'
+  },
+  {
+    id:11, type:'obj',
+    q:'加缪在《西西弗神话》结尾写道："必须想象西西弗是______的。"',
+    o:[
+      {t:'痛苦',s:0,note:''},
+      {t:'快乐',s:0,note:''},
+      {t:'麻木',s:0,note:''},
+      {t:'幸福',s:3,note:'可以想象到每天重复无意义的生活有多么的幸福'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ D. 幸福（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">加缪的法语原词是heureux（幸福），不是joyeux（快乐），不是satisfait（满足）。快乐是一会儿的事，幸福是一种存在状态。西西弗每天推石头上山、看它滚下来、再推——诸神以为这是最狠的惩罚。但加缪说：当西西弗转身下山的那个瞬间，他意识到了这一切有多荒诞——然后他选择了继续推，于是他就超越了命运。选"快乐"的人读歪了整个荒诞哲学：加缪不是让你在无意义里找乐子，是让你明知没意义还活着——而且活成一种幸福。</div>'
+  },
+  {
+    id:12, type:'obj',
+    q:'罗曼·罗兰在《名人传》中写道："世界上只有一种真正的英雄主义，那就是认清生活的真相后依然热爱生活。"这句话是评价谁的？',
+    o:[
+      {t:'亚里士多德',s:0,note:''},
+      {t:'米开朗琪罗',s:3,note:'出自名人传中的米开朗琪罗传'},
+      {t:'贝多芬',s:0,note:''},
+      {t:'梵高',s:0,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ B. 米开朗琪罗（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">《名人传》包含三本：《贝多芬传》《米开朗琪罗传》《托尔斯泰传》。这句被各种励志书引用到包浆的话，出自《米开朗琪罗传》序言。罗兰写这本书的目的不是给天才立碑，是给他们立"苦难传"——米开朗琪罗才华横溢但一辈子被教皇折腾、被家族拖累、八十多岁了还在高强度工作。罗兰说的"英雄主义"不在辉煌成就里，在"看穿了生活的糟心之后仍然说「是」。误选贝多芬的——方向对了一半，三本里贝多芬最出名——但这句话属于那个在西斯廷画了四年天花板的人。</div>'
+  },
+  {
+    id:13, type:'obj',
+    q:'鲁迅《狂人日记》中狂人翻开历史书，从密密麻麻的字缝里看见的是——"______"。',
+    o:[
+      {t:'仁义道德',s:0,note:'字面上写的就是"仁义道德"，但狂人从字缝里看出来的不是这个'},
+      {t:'仁义礼智信',s:0,note:''},
+      {t:'吃人',s:3,note:''},
+      {t:'我真傻，真的',s:0,note:'这句出自鲁迅另一篇小说《祝福》，是祥林嫂嘴边老念叨的话'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ C. 吃人（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">鲁迅的写法有层次：翻开历史，字面上每页都写着"仁义道德"——仔细看了半夜，才从字缝里看出字来——满本都写着两个字："吃人"。"仁义道德"是明面上的漂亮话，"吃人"是字缝里的血腥。选A的人——你也被历史书上那层漂亮话骗过去了，没跟着狂人一起把眼皮翻到字缝里去。选D的是把祥林嫂的口头禅移植到了狂人日记里——跨作品串场虽然好笑，但你至少对鲁迅有印象。</div>'
+  },
+  {
+    id:14, type:'obj',
+    q:'"我思故我在"是哪位哲学家提出的？',
+    o:[
+      {t:'笛卡尔',s:3,note:'Cogito, ergo sum——笛卡尔在《谈谈方法》中提出'},
+      {t:'黑格尔',s:0,note:'黑格尔的思想主要是辩证法、存在即合理等'},
+      {t:'奥尼尔',s:0,note:''},
+      {t:'海德格尔',s:0,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ A. 笛卡尔（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">笛卡尔（1596-1650），"Cogito, ergo sum"。他用的方法是"彻底怀疑"：假设有个全能的恶魔在骗我，让我所有感官都在产生幻觉——但即使如此，"我被骗了"这个事实本身就证明了"我"（被骗的主体）必然存在。这个推理直接奠定了近代哲学的主体性原则。黑格尔主要搞辩证法和"存在即合理"，海德格尔关心的是"存在"本身——都不是"我思故我在"的版权人。选"奥尼尔"的——你可能想起来了一个运动员。</div>'
+  },
+  {
+    id:15, type:'obj',
+    q:'以下哪项理论是弗洛伊德提出的？',
+    o:[
+      {t:'性压抑',s:3,note:'弗洛伊德精神分析的核心概念之一'},
+      {t:'集体潜意识',s:0,note:'荣格提出的'},
+      {t:'人格面具',s:0,note:'也是荣格提出的'},
+      {t:'以上都是',s:0,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ A. 性压抑（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">弗洛伊德的核心概念——性压抑（力比多被压抑后通过梦、口误、症状"泄漏"出来）。B和C全是荣格的：集体潜意识是人类共享的原型库，人格面具是社交中的"假面"。荣格本来是弗洛伊德的学生兼接班人，1913年两人因理念不合决裂——弗洛伊德说"潜意识是被压抑的个人史"，荣格说"不对，潜意识还包含全人类的集体遗产"。分清这对师徒是心理学入门的基本功。</div>'
+  },
+  {
+    id:16, type:'obj',
+    q:'以下哪项不是赫胥黎小说《美丽新世界》的观点？',
+    o:[
+      {t:'消费主义与娱乐至死，会瓦解深度与意义',s:0,note:'《美丽新世界》用"苏摩"和多巴胺式的娱乐预演了消费主义的终极形态'},
+      {t:'温和的奴役，比暴力专制更可怕',s:0,note:'书中的人们不是被强迫——他们热爱自己的奴役，这正是赫胥黎最深的恐惧'},
+      {t:'绝对权力必然导致绝对奴役',s:3,note:'这是奥威尔《1984》的核心命题——电幕、思想警察、双重思想的恐怖'},
+      {t:'痛苦与不适，是人性与文明的根基',s:0,note:'书中保留区里的野蛮人约翰，正是带着痛苦才保持了人性的完整'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ C. 绝对权力必然导致绝对奴役（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">这是分清《1984》和《美丽新世界》的基本功。奥威尔害怕的是"禁止"——焚书、监视、电幕、思想警察。赫胥黎害怕的是"满足"——苏摩、娱乐、消费、性自由。奥威尔担心暴君让我们失去自由，赫胥黎担心我们笑着把自由交出去。C项是老大哥式的恐怖，不是赫胥黎式的恐怖。能分清这两本书是文艺青年的出厂设置——分不清的话，你的反乌托邦文学知识基本来自书名，没有来自正文。</div>'
+  },
+  {
+    id:17, type:'obj',
+    q:'以下哪首摇滚歌曲没有表达明确的反战主题？',
+    o:[
+      {t:'鲍勃迪伦-《Blowing in the wind》',s:0,note:'1963年民权运动与反战运动的圣歌'},
+      {t:'小红莓-《Zombie》',s:0,note:'对北爱尔兰冲突中平民伤亡的愤怒控诉'},
+      {t:'罗大佑-《明天会更好》',s:3,note:'表达的是和平、团结与希望的公益歌曲，与反战歌曲在情感指向上有本质区别'},
+      {t:'Beyond-《Amani》',s:0,note:'黄家驹为非洲战乱中的儿童写下的反战与和平呼唤'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ C. 罗大佑《明天会更好》（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">"反战"和"呼吁和平"是两码事。反战是向外的——指向战争、暴力和施暴者，以愤怒和控诉为燃料（Zombie直面坦克下的孩子，Blowing in the wind追问答案在哪里）；和平是向内的——指向希望和团结。《明天会更好》是1985年公益大合唱，打的是鼓励牌，没有对战争暴力的具体指涉。把"希望和平"等同于"反战"——等于把许愿和抗议搞混了。</div>'
+  },
+  {
+    id:18, type:'obj',
+    q:'蒙太奇是电影拍摄和剪辑的艺术，以下哪部作品没有突出蒙太奇手法？',
+    o:[
+      {t:'谢尔盖·爱森斯坦-《战舰波将金号》',s:0,note:'"敖德萨阶梯"段落是蒙太奇理论的教科书范例'},
+      {t:'黑泽明-《七武士》',s:0,note:'黑泽明通过交叉剪辑和快速切换塑造了战斗场景的节奏'},
+      {t:'斯坦利·库布里克-《2001 太空漫游》',s:0,note:'骨头→太空飞船的匹配剪辑是影史最经典的蒙太奇'},
+      {t:'塔可夫斯基-《镜子》',s:3,note:'用诗性长镜头替代剪辑的叙事功能——反蒙太奇美学的代表'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ D. 塔可夫斯基《镜子》（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">爱森斯坦说"两个镜头的碰撞产生意义"——剪辑即创造（敖德萨阶梯就是教科书）。塔可夫斯基说"不对，意义包含在一个镜头之内"——长镜头、缓慢运镜、让时间自己在画面里流。他的《镜子》几乎没有传统叙事剪辑，取而代之的是记忆和现实的无缝漂移。这不是技法之争，是电影本体论之争。</div>'
+  },
+  {
+    id:19, type:'obj',
+    q:'以下哪两位作家组成CP的可能性最低？',
+    o:[
+      {t:'加缪、萨特',s:0,note:'曾为战友后公开决裂——思想对话与私人恩怨构成哲学史上最富张力的"双人传"'},
+      {t:'纳兰性德、仓央嘉措',s:0,note:'常被读者跨时空并置：同为深情绝美、宿命感拉满的顶级诗人'},
+      {t:'陀思妥耶夫斯基、托尔斯泰',s:3,note:'同在俄国的文学双峰，但生前几乎零交集，彼此评价也相当冷淡'},
+      {t:'王阳明、朱熹',s:0,note:'理学与心学之争是儒学内部最经典的"对立面CP线"'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ C. 陀思妥耶夫斯基与托尔斯泰（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">另外三对都有真实的"CP线"：加缪和萨特是真·战友变仇人（咖啡馆密友→公开论战→决裂），纳兰与仓央被文青跨时空拉郎了二十年，朱王之争本身就是儒学最经典的"对立面CP"。唯独陀与托——俄国文学双峰，但两人一辈子没见过面。托尔斯泰日记里说陀氏"写得不好"，陀氏从来不提托尔斯泰。被文学史并列的两颗星，从未真正交汇过。</div>'
+  },
+  {
+    id:20, type:'obj',
+    q:'自我防御机制是我们在面对外界压力时，无意识启动的"防护罩"，以下文艺作品里属于自我防御机制的是？',
+    o:[
+      {t:'《哈利·波特》斯内普的压抑',s:1,note:'将无法面对的情感（对莉莉的愧疚与爱）沉入潜意识深处'},
+      {t:'《老友记》钱德勒的幽默',s:1,note:'用笑话制造人际安全距离——父母离异后的情感防御'},
+      {t:'《被嫌弃的松子的一生》松子的退行',s:1,note:'成年后遇到压力就退回到童年做鬼脸的应对模式'},
+      {t:'《甄嬛传》安陵容的投射',s:1,note:'将不愿承认的阴暗面归于他人——"不是我的问题，是你们的问题"'},
+      {t:'以上都是',s:3,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ E. 以上都是（选E得3分，选任一角色得1分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">弗洛伊德的自我防御机制就是心理上的"自动防护罩"：斯内普把愧疚压进潜意识（压抑），钱德勒用笑话砌墙（幽默），松子退回到童年做鬼脸（退行），安陵容把阴暗面甩锅给别人（投射）。四种机制，四部作品——弗洛伊德的思想早就渗透进了流行叙事的底层语法。选单个角色得1分——你看懂了那个案例，但这题考的是"范畴广度"，不是"挑一个对的"。</div>'
+  },
+
+  // ============ 主观题 21-25 ============
+  {
+    id:21, type:'sub',
+    q:'你觉得自己是文艺青年吗？',
+    o:[
+      {t:'必须是，我爱文学和艺术',s:0,note:''},
+      {t:'觉得自己有文艺气质，但不想承认',s:1,note:''},
+      {t:'不是，我就是个普通打工人',s:2,note:''},
+      {t:'文青？那不是骂人的吗？',s:3,note:'真正的文青不喜欢给自己贴标签'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ D. "文青？那不是骂人的吗？"（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">这题不测你是否文艺——测的是你看"文艺青年"这个标签有多清醒。选D的人对这个词被过度消费的事实了然于心：真文青从不会主动认领这个社交人设。选A的人——真诚但不设防，你可能还没意识到"文青"已经从一个审美标签变成了一个社交风险。</div>'
+  },
+  {
+    id:22, type:'sub',
+    q:'去音乐节，你会？',
+    o:[
+      {t:'古着衬衫 + 工装裤 + 帆布鞋，站在后排闭眼摇头，仿佛在跟另一个时空对话',s:2,note:'沉浸式的欣赏姿态——但注意力在"姿态"而非音乐本体'},
+      {t:'专注欣赏音乐，对于喜欢的乐队，不想错过任何一个节拍',s:3,note:'真正热爱音乐的人会把注意力放在音乐本身，而非被看见'},
+      {t:'穿上印有某精神病院的病号服，在人群里组织大家开火车',s:0,note:''},
+      {t:'和朋友坐在沙发区娱乐聊天，让音乐装饰生活',s:1,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ B. 专注听音乐（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">在一个人人都在精心"被看见"的场合，你选择了不去展示——只是听。选A的——古着穿搭+闭眼摇头确实投入，但你有一部分注意力分配给了"自己的在场姿态"。真正的热爱不需要观众。</div>'
+  },
+  {
+    id:23, type:'sub',
+    q:'以下哪种人，会是你的crush？',
+    o:[
+      {t:'TA转发《萨菲娜》到朋友圈并配文"保护姑娘，贯彻落实"',s:1,note:'懂摇滚梗——但这是在用文化符号"表演态度"'},
+      {t:'和TA去音乐节，看到前面有女生坐在男生肩上时，TA说：我也要那样/你也可以那样',s:0,note:''},
+      {t:'问TA最想和你做什么，TA说"逛超市"，因为那样比较有生活感',s:1,note:'懂浪漫日常——但"逛超市"本身也成了被消费的浪漫模板'},
+      {t:'你们的性格不尽相同，但是彼此可以deep talk的人',s:3,note:'可以deep talk才是真正的心动密码'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ D. 可以deep talk的人（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">A和C都需要一个现成的文化脚本来连接——萨菲娜是痛仰的IP，"逛超市"是当代约会模板。Deep talk不需要任何脚本——它不是"找到了懂同一个梗的人"，而是"找到了愿意和你一起思考的人"。</div>'
+  },
+  {
+    id:24, type:'sub',
+    q:'如果要排影史十大导演，谁最应该上榜？',
+    o:[
+      {t:'张艺谋',s:0,note:'国际影响多来自获奖，而非影史语言层面的结构性贡献'},
+      {t:'克里斯托弗·诺兰',s:1,note:'叙事技巧惊艳，但尚在创作中，不足以锁定影史前十'},
+      {t:'史蒂文·斯皮尔伯格',s:2,note:'工业电影的顶点，但艺术语言的开创性不如伯格曼'},
+      {t:'英格玛·伯格曼',s:3,note:'影史绕不开的顶级大佬——现代主义电影美学的奠基人'}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ D. 英格玛·伯格曼（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">"影史十大"问的不是谁好看——是"谁重新发明了电影"。伯格曼用《第七封印》《假面》证明了电影不只是讲故事的——它可以做哲学。选诺兰是当代影迷的通病：他的技巧令人折服，但他优化了已有的语言，没有重新发明过它。</div>'
+  },
+  {
+    id:25, type:'sub',
+    q:'你认为以下哪个概念被曲解简化成了一种标签化叙事？',
+    o:[
+      {t:'女性主义',s:1,note:'被简化为"性别战争"而非权力结构的分析'},
+      {t:'原生家庭',s:1,note:'被简化为"家庭不幸=人生不幸"而非依恋模式的复杂性'},
+      {t:'情绪价值',s:1,note:'被简化为恋爱技巧而非情感交互的深层需求'},
+      {t:'以上都是',s:3,note:''}
+    ],
+    fullExplain:'<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ D. 以上都是（3分）</span></div><div style="padding-left:12px;color:#444;margin-bottom:8px">这三个词都经历了同一场退化：从严肃的学术概念变成了社交媒体的身份标签。女性主义变成了"打拳"，原生家庭变成了"万事背锅侠"，情绪价值变成了约会话术。选单个选项说明你发现了某个词的退化——但这不是个案，是一个整体现象。</div>'
+  },
+
+  // ============ 填空题 26-30 ============
+  {
+    id:26, type:'fill',
+    q:'电影史上有个独特的类型，导演把影像视为"流动的诗篇"，比如安哲罗普洛斯、塔可夫斯基，以及毕赣，都是这类电影的作者，这类电影被称为______电影。',
+    answer:'诗',
+    x:'诗电影（Film-poem）——安哲罗普洛斯说"我的电影不是讲故事，是写诗"。塔可夫斯基的《镜子》、毕赣的《路边野餐》，都不是在"叙述"，而是在"吟咏"。时间在这些电影里不是线的，是环的。'
+  },
+  {
+    id:27, type:'fill',
+    q:'马尔库塞在《单向度的人》中提出的核心概念——"______社会"，指人丧失了否定性批判能力的社会形态。',
+    answer:'单向度',
+    x:'马尔库塞认为，发达工业社会通过技术理性和消费主义，把人变成了只懂得"肯定"、丧失了"否定"和"超越"能力的存在。你不再问"为什么"，你只问"怎么做"。'
+  },
+  {
+    id:28, type:'fill',
+    q:'20 世纪 60 年代美国年轻人掀起的一场反主流、反战争、反物质、追求爱与自由的青年文化运动，这场运动被称为______运动。',
+    answer:'嬉皮士',
+    x:'嬉皮士运动（Hippie Movement）——花童、反战游行、伍德斯托克音乐节、"Make Love, Not War"。它后来被消费主义收编了，但那些口号和音乐留了下来。'
+  },
+  {
+    id:29, type:'fill',
+    q:'维特根斯坦《逻辑哲学论》中提出：______的边界，即是思维的边界。',
+    answer:'语言',
+    x:'"语言的边界，即是思维的边界。"——这不是说"汉语比英语差"那种语言比较。维特根斯坦的意思是：你能清晰思考什么，取决于你有什么词语来描述它。没有"自由"这个词的语言，其使用者就无法思考"自由"。'
+  },
+  {
+    id:30, type:'fill',
+    q:'崔健在歌曲《一块红布》里写道：那天你用一块红布，蒙住我双眼也蒙住了天，你问我看见了什么，我说我看见了______。',
+    answer:'幸福',
+    x:'"我说我看见了幸福"——崔健用一块遮住眼睛的红布来写一个时代的集体幻觉。幸福不是清晰的，幸福是"蒙着眼睛看到的"。这是中国摇滚史上最狠的一句歌词。'
+  },
+];
+
+const total=Q.length, maxScore=90;
+const answers={}; const flags={};
+
+// ============================================================
+// STATS ENGINE (localStorage + JSONBin 云端同步)
+// ============================================================
+var LS_KEY='wenqing_exam_stats';
+
+function fetchStats(){
+  try{
+    var d=localStorage.getItem(LS_KEY);
+    return d?JSON.parse(d):{};
+  }catch(e){ return {}; }
+}
+
+function pushStats(stats){
+  try{ localStorage.setItem(LS_KEY,JSON.stringify(stats)); }catch(e){}
+  syncToCloud(stats);
+}
+
+// 页面加载时从云端拉取数据合并到本地（不影响页面渲染速度，fire-and-forget）
+function syncFromCloud(){
+  if(!CLOUD_ENABLED||BIN_ID==='YOUR_BIN_ID') return;
+  var url='https://api.jsonbin.io/v3/b/'+BIN_ID+'/latest';
+  fetch(url,{headers:{'X-Master-Key':API_KEY}}).then(function(r){
+    if(!r.ok) throw new Error('status '+r.status);
+    return r.json();
+  }).then(function(j){
+    var cloud=j.record||{};
+    if(!cloud.total) return;
+    var local=fetchStats();
+    // 云端数据量更大就用云端的，否则保留本地
+    if(cloud.total>(local.total||0)){
+      localStorage.setItem(LS_KEY,JSON.stringify(cloud));
+      // 刷新顶部人数显示
+      var el=document.getElementById('statsFlash');
+      if(el) el.textContent='📊 已有 '+cloud.total+' 人参与了这场考试 · 提交后即可查看全部答题统计';
+    }
+  }).catch(function(e){ console.log('☁️ 云端数据同步跳过（离线或未配置）'); });
+}
+
+// 提交后异步推送到云端（不阻塞提交流程，失败也不影响）
+function syncToCloud(stats){
+  if(!CLOUD_ENABLED||BIN_ID==='YOUR_BIN_ID') return;
+  var json=JSON.stringify(stats);
+  fetch('https://api.jsonbin.io/v3/b/'+BIN_ID,{
+    method:'PUT',
+    headers:{'X-Master-Key':API_KEY,'Content-Type':'application/json','X-Bin-Versioning':'false'},
+    body:json
+  }).catch(function(e){ console.log('☁️ 云端推送跳过'); });
+}
+
+function mergeSubmit(stats,userAnswers){
+  var s=JSON.parse(JSON.stringify(stats));
+  if(typeof s.total!=='number') s.total=0;
+  s.total++;
+  s.mc=s.mc||{};
+  s.fill=s.fill||{};
+  Q.forEach(function(q){
+    var aid=q.id;
+    if(q.type==='fill'){
+      s.fill[aid]=s.fill[aid]||{correct:0,total:0};
+      s.fill[aid].total++;
+      var ua=(userAnswers[aid]||'').trim();
+      if(ua===q.answer) s.fill[aid].correct++;
+    } else {
+      s.mc[aid]=s.mc[aid]||{};
+      var sel=userAnswers[aid];
+      if(sel!==null&&sel!==undefined&&sel!==''){
+        var idx=parseInt(sel);
+        if(!isNaN(idx)&&idx>=0&&idx<26){
+          s.mc[aid][String.fromCharCode(65+idx)]=(s.mc[aid][String.fromCharCode(65+idx)]||0)+1;
+        }
+      }
+    }
+  });
+  return s;
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render(){
+  const root=document.getElementById('root');root.innerHTML='';
+
+  const flash=document.createElement('div');flash.className='stats-flash';flash.id='statsFlash';
+  flash.textContent='加载统计数据中…';root.appendChild(flash);
+
+  // MC section
+  Q.forEach(q=>{
+    const card=document.createElement('div');card.className='q-card';
+    const hdr=document.createElement('div');hdr.className='q-header';
+    const num=document.createElement('span');num.className='q-num';num.textContent=`#${String(q.id).padStart(2,'0')}`;
+    const txt=document.createElement('span');txt.className='q-text';txt.textContent=q.q;
+    const tb=document.createElement('span');tb.className=`q-type t-${q.type}`;
+    tb.textContent=q.type==='obj'?'客观':(q.type==='sub'?'主观':'填空');
+    hdr.appendChild(num);hdr.appendChild(txt);hdr.appendChild(tb);card.appendChild(hdr);
+
+    if(q.type==='fill'){
+      const inp=document.createElement('input');inp.className='blank-input';
+      inp.type='text';inp.placeholder='请输入答案（必须完全匹配）';inp.autocomplete='off';
+      inp.id=`inp-${q.id}`;
+      inp.addEventListener('input',()=>{answers[q.id]=inp.value;flags[q.id]=true;});
+      card.appendChild(inp);
+    } else {
+      const wrap=document.createElement('div');wrap.className='options';
+      q.o.forEach((opt,oi)=>{
+        const label=document.createElement('label');label.className='option';
+        const radio=document.createElement('input');radio.type='radio';radio.name=`q${q.id}`;radio.value=oi;
+        radio.addEventListener('change',()=>{answers[q.id]=oi;flags[q.id]=true;wrap.querySelectorAll('.option').forEach(el=>el.classList.remove('selected'));label.classList.add('selected');});
+        const span=document.createElement('span');span.textContent=`${String.fromCharCode(65+oi)}. ${opt.t}`;
+        label.appendChild(radio);label.appendChild(span);wrap.appendChild(label);
+      });
+      card.appendChild(wrap);
+    }
+    root.appendChild(card);
+  });
+
+  // Submit
+  const sw=document.createElement('div');sw.className='submit-wrap';
+  const sb=document.createElement('button');sb.className='btn-submit';sb.textContent='提交答案';
+  sb.addEventListener('click',onSubmit);sw.appendChild(sb);root.appendChild(sw);
+  const rw=document.createElement('div');rw.className='result-wrap';rw.id='resultWrap';root.appendChild(rw);
+
+  // Load stats async
+  loadStatsFlash();
+}
+
+function loadStatsFlash(){
+  try{
+    var s=fetchStats();
+    var total=s.total||0;
+    document.getElementById('statsFlash').textContent=total>0
+      ?'📊 已有 '+total+' 人参与了这场考试 · 提交后即可查看全部答题统计'
+      :'📊 即将成为第一位答题者 · 提交后即可查看全部答题统计';
+  }catch(e){
+    document.getElementById('statsFlash').textContent='📊 即将成为第一位答题者 · 提交后即可查看全部答题统计';
+  }
+  // 后台尝试从云端拉取更完整的数据（不影响页面渲染）
+  syncFromCloud();
+}
+
+// ============================================================
+// SUBMIT
+// ============================================================
+function onSubmit(){
+  const sb=document.querySelector('.btn-submit');
+  const origText=sb.textContent;
+
+  try{
+    const unf=Q.some(q=>!flags[q.id]);
+    if(unf&&!confirm('还有题目没答完，确定提交？')) return;
+
+    // Loading state
+    sb.textContent='提交中…';
+    sb.disabled=true;
+    sb.style.opacity='0.7';
+    sb.style.cursor='wait';
+
+    // Score
+    let score=0; const details=[];
+    Q.forEach(q=>{
+      if(q.type==='fill'){
+        const ua=(answers[q.id]||'').trim();
+        const ok=ua===q.answer;
+        if(ok) score+=3;
+        details.push({q,ua,ok,pts:ok?3:0});
+      } else {
+        const sel=answers[q.id];
+        if(sel===null||sel===undefined){details.push({q,ua:'未作答',ok:false,pts:0});return;}
+        const opt=q.o[sel];
+        score+=opt.s;
+        const best=q.o.reduce((a,b)=>a.s>b.s?a:b);
+        details.push({q,ua:opt.t,ok:opt.s===best.s,pts:opt.s,optIdx:sel});
+      }
+    });
+
+    const pct=Math.round(score/maxScore*100);
+
+    // Push stats
+    var currentStats=fetchStats();
+    currentStats=mergeSubmit(currentStats, answers);
+    pushStats(currentStats);
+
+    // Show result
+    showResult(score,maxScore,pct,details,currentStats);
+
+  }catch(e){
+    alert('提交过程出错：'+e.message+'。请刷新页面重试。如果问题持续，请在代码中设置 CLOUD_ENABLED=false 使用离线模式。');
+    console.error('Submit error:',e);
+    sb.textContent=origText;
+    sb.disabled=false;
+    sb.style.opacity='1';
+    sb.style.cursor='pointer';
+  }
+}
+
+// ============================================================
+// RESULT
+// ============================================================
+function showResult(score,max,pct,details,stats){
+  const rw=document.getElementById('resultWrap');rw.innerHTML='';rw.classList.add('show');
+
+  const card=document.createElement('div');card.className='result-card';
+  let emoji,title,main;
+
+  const wrongs=details.filter(d=>!d.ok);
+
+  if(pct>=70){
+    emoji='🖤';title='真·文艺青年';
+    main='你在这份考卷上的表现，说明了两件事：第一，你真的读过那些书、看过那些电影、思考过那些问题。你知道"生而为人我很抱歉"是寺内寿太郎写的，知道《浮士德》不属于表现主义，知道"高尚是高尚者的墓志铭"是北岛那句诗的下半句。这些不是靠刷豆瓣金句能记住的东西——它们来自你在精神世界里花过的时间。\n\n第二，你对生活有自己的态度。你在音乐节选择专注听音乐而不是摆拍穿搭，你心动的理由是"可以deep talk"，你知道真正的文青从不会主动给自己贴标签。文艺对你来说不是人设，是日常。你不需要用文艺来证明自己——这恰好是你最文艺的地方。';
+    if(wrongs.length>0){
+      main+='\n\n不过——';
+      const picks=wrongs.slice(0,2);
+      picks.forEach(d=>{
+        const best=d.q.o?d.q.o.reduce((a,b)=>a.s>b.s?a:b):null;
+        if(best&&d.optIdx!==undefined){
+          main+=`\n\nQ${d.q.id}「${d.q.q.slice(0,28)}…」你选了"${d.ua}"，最佳答案是"${best.t}"。`;
+          if(best.note) main+=`\n${best.note}`;
+        }
+        if(d.q.type==='fill'){
+          main+=`\n\nQ${d.q.id}「${d.q.q.slice(0,28)}…」你填的是"${d.ua}"，正确答案是"${d.q.answer}"。`;
+        }
+      });
+    }
+  } else if(pct>=40){
+    emoji='🎭';title='伪文青';
+    main='你的文艺姿态是薛定谔的——打开朋友圈的时候有，关上屏幕的时候无。你知道一些名词，但它们的精确含义对你来说像隔着一层毛玻璃——看得见轮廓，看不清细节。';
+
+    if(wrongs.length>0){
+      main+='\n\n来看看你答错的这几道——每一道都是伪文青的经典翻车现场：';
+      const picks=wrongs.filter(d=>d.q.type==='obj'||d.q.type==='sub').slice(0,4);
+      picks.forEach(d=>{
+        const best=d.q.o.reduce((a,b)=>a.s>b.s?a:b);
+        main+=`\n\n🔍 Q${d.q.id}「${d.q.q.slice(0,30)}…」`;
+        main+=`\n你选了：<b>${d.ua}</b>（得${d.pts}分）`;
+        main+=`\n最佳答案：<b>${best.t}</b>（3分）`;
+        if(best.note) main+=`\n💡 ${best.note}`;
+        const wrongOpt=d.q.o[d.optIdx];
+        if(wrongOpt&&wrongOpt.s<best.s&&wrongOpt.note) main+=`\n⚠️ 为什么你选的不对：${wrongOpt.note}`;
+      });
+      const fillW=wrongs.filter(d=>d.q.type==='fill');
+      if(fillW.length>0){
+        fillW.slice(0,2).forEach(d=>{
+          main+=`\n\n🔍 Q${d.q.id}「${d.q.q.slice(0,30)}…」`;
+          main+=`\n你填了：<b>${d.ua||'（空）'}</b>`;
+          main+=`\n正确答案：<b>${d.q.answer}</b>`;
+          if(d.q.x) main+=`\n💡 ${d.q.x}`;
+        });
+      }
+    }
+  } else {
+    emoji='💼';title='已与文艺划清界限';
+    main='坦白说，这份考卷你基本上在裸考。你不知道笛卡尔，分不清《美丽新世界》和《1984》，对崔健《一块红布》里看见了什么完全没有概念。文艺青年那套话语体系——萨特、加缪、表现主义、新浪潮、蒙太奇——对你来说大概是另一颗星球的语言。';
+
+    if(wrongs.length>0){
+      main+='\n\n不过——来看看你答错的这些题，至少让你知道文艺青年们每天都在聊些什么：';
+      const picks=wrongs.filter(d=>d.q.type==='obj'||d.q.type==='sub').slice(0,3);
+      picks.forEach(d=>{
+        const best=d.q.o.reduce((a,b)=>a.s>b.s?a:b);
+        main+=`\n\nQ${d.q.id}「${d.q.q.slice(0,28)}…」`;
+        main+=`\n你选了：${d.ua}`;
+        main+=`\n实际上：${best.t}`;
+        if(best.note) main+=`\n💡 ${best.note}`;
+      });
+      const fillW=wrongs.filter(d=>d.q.type==='fill');
+      if(fillW.length>0){
+        fillW.slice(0,1).forEach(d=>{
+          main+=`\n\nQ${d.q.id}「${d.q.q.slice(0,28)}…」正确答案是：${d.q.answer}`;
+        });
+      }
+    }
+
+    main+='\n\n但是——文艺只是生活的一部分，不是什么必需品。不喜欢读哲学没关系，不听摇滚乐没关系，分不清戈达尔和特吕弗更没关系。你不需要用这些来证明自己有深度。一顿好吃的饭、一个睡到自然醒的周末、一只路边朝你喵了一声的猫——这些带来的快乐不比懂得"他人即地狱"少一丁点。你快乐就好，真的。';
+  }
+
+  const e=document.createElement('div');e.className='emoji-big';e.textContent=emoji;
+  const t=document.createElement('div');t.className='title';t.textContent=title;
+  const s=document.createElement('div');s.className='score';s.textContent=`得分：${score} / ${max}（${pct}%）`;
+  const c=document.createElement('div');c.className='comment';c.innerHTML=main.replace(/\n/g,'<br>');
+  card.appendChild(e);card.appendChild(t);card.appendChild(s);card.appendChild(c);
+
+  // Review panel with STATS
+  const revSec=document.createElement('div');revSec.style.cssText='margin-top:14px';
+  const revBtn=document.createElement('button');revBtn.className='btn-review';revBtn.textContent='📋 查看全部答案解析与统计分布';
+  const revPanel=document.createElement('div');revPanel.className='review-panel';
+  revBtn.addEventListener('click',()=>{
+    revPanel.classList.toggle('show');
+    revBtn.textContent=revPanel.classList.contains('show')?'📋 收起解析':'📋 查看全部答案解析与统计分布';
+  });
+
+  let rh='';
+  const colors=['#6c5b7b','#c06c4a','#3a7ca5','#b3423a','#27ae60'];
+
+  Q.forEach(q=>{
+    const d=details.find(x=>x.q.id===q.id);
+    rh+=`<div class="rv-item"><span class="rv-num">Q${q.id}</span>${q.q}`;
+    if(q.type==='fill'){
+      rh+=`<br><span class="rv-correct">✓ 正确答案：${q.answer}</span>`;
+      rh+=`<br><span style="font-size:.75rem;color:#999">你的答案：${d?d.ua||'（空）':'（空）'}（得分：${d?d.pts:'—'}分）</span>`;
+      if(q.x) rh+=`<div class="rv-expl">${q.x}</div>`;
+      // Fill stats
+      const fs=(stats.fill||{})[q.id];
+      if(fs&&fs.total>0){
+        const rate=Math.round(fs.correct/fs.total*100);
+        rh+=`<div class="fill-stat">📊 答对率：<span class="big-num">${rate}%</span>（${fs.correct}/${fs.total}人）</div>`;
+      }
+    } else {
+      const best=q.o.reduce((a,b)=>a.s>b.s?a:b);
+      rh+=`<br><span class="rv-correct">✓ 最佳答案：${best.t}（3分）</span>`;
+      // MC stats
+      const ms=(stats.mc||{})[q.id];
+      const totalVotes=ms?Object.values(ms).reduce((a,b)=>a+b,0):0;
+      q.o.forEach((opt,oi)=>{
+        const lbl=String.fromCharCode(65+oi);
+        const votes=ms&&ms[lbl]?ms[lbl]:0;
+        const vpct=totalVotes>0?Math.round(votes/totalVotes*100):0;
+        const isBest=opt.s===best.s;
+        const isYours=d&&d.optIdx===oi;
+        rh+=`<div class="stat-row">`;
+        rh+=`<span class="stat-opt">${lbl}.</span>`;
+        rh+=`<span style="font-size:.74rem;flex:1;color:${isBest?'#27ae60':isYours?'#c0392b':'#555'}">${opt.t.slice(0,36)}${opt.t.length>36?'…':''} ${isBest?'✓':''} ${isYours?'← 你的选择':''} ${opt.s>0&&opt.s<3?'(+'+opt.s+'分)':''}</span>`;
+        rh+=`<span class="stat-label">${votes||0}人·${vpct}%</span>`;
+        rh+=`<div class="stat-bar-wrap"><div class="stat-bar-fill" style="width:${vpct}%;background:${colors[oi%5]}"></div></div>`;
+        rh+=`</div>`;
+      });
+      // 详细解析——放在所有选项+统计图的最下方
+      rh+=`<div class="rv-expl" style="margin-top:10px;padding:10px 12px;background:#fffef9;border-radius:8px;border:1px solid #e8e0d0;line-height:1.9;font-size:.78rem">`;
+      rh+=`<div style="font-weight:600;color:#b8860b;margin-bottom:8px">📝 详细解析</div>`;
+      if(q.fullExplain){
+        rh+=q.fullExplain;
+      } else {
+        rh+=`<div style="margin-bottom:6px"><span style="color:#27ae60;font-weight:600">✓ 正确答案：</span>${best.t}</div>`;
+        rh+=`<div style="margin-bottom:10px;padding-left:12px;color:#444">${best.note||'该选项为本题最佳答案。'}</div>`;
+        q.o.forEach((opt,oi)=>{
+          if(opt.s>0&&opt.s<3&&opt.note){
+            rh+=`<div style="margin-bottom:4px"><span style="color:#c06c4a;font-weight:600">⚠️ 易错选项：</span>${opt.t}（${opt.s}分）</div>`;
+            rh+=`<div style="margin-bottom:8px;padding-left:12px;color:#666">${opt.note}</div>`;
+          }
+        });
+        q.o.forEach((opt,oi)=>{
+          if(opt.s===0&&opt.note){
+            rh+=`<div style="margin-bottom:4px"><span style="color:#999;font-weight:600">✗ 干扰项：</span>${opt.t}</div>`;
+            rh+=`<div style="margin-bottom:6px;padding-left:12px;color:#999;font-size:.74rem">${opt.note}</div>`;
+          }
+        });
+      }
+      rh+=`</div>`;
+    }
+    rh+=`</div>`;
+  });
+  revPanel.innerHTML=rh;
+  revSec.appendChild(revBtn);revSec.appendChild(revPanel);
+  card.appendChild(revSec);
+
+  rw.appendChild(card);
+  rw.scrollIntoView({behavior:'smooth',block:'center'});
+  document.querySelector('.submit-wrap').style.display='none';
+  document.getElementById('statsFlash').style.display='none';
+}
+
+render();
+</script>
+</body>
+</html>
