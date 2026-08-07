@@ -66,7 +66,7 @@ body{font-family:'Noto Sans SC',-apple-system,sans-serif;background:#f5f0eb;colo
 <body>
 
 <div class="hero">
-  <h1>文艺知识储备考试</h1>
+  <h1>文艺青年鉴赏考试</h1>
   <p class="sub">测测你到底读了多少书，还是只读了几篇公众号</p>
   <span class="badge">📝 客观题 + 主观题 + 填空题 · 共 30 题</span>
 </div>
@@ -681,7 +681,7 @@ function showResult(score,max,pct,details,stats){
     main='坦白说，这份考卷你基本上在裸考。文艺青年那套话语体系——萨特、加缪、表现主义、新浪潮、蒙太奇——对你来说大概是另一颗星球的语言。';
 
     if(wrongs.length>0){
-      main+='\n\n不过，来看看你答错的这几道——不会背可以，但不能不知道：';
+      main+='\n\n先来看看你答错的几道题吧：';
       const mcW=wrongs.filter(d=>d.q.type==='obj'||d.q.type==='sub');
       const fillW=wrongs.filter(d=>d.q.type==='fill');
       const picks=[...mcW,...fillW].slice(0,3);
